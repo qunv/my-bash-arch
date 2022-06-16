@@ -66,3 +66,5 @@ alias dcla='docker container ls -a'
 alias dri='docker images | sed '1d' | fzf -m | awk '{print $3}' | xargs docker rmi'
 alias drc='docker ps -a | sed '1d' | fzf -m | awk '{print $1}' | xargs docker rm -v'
 alias dthanos='docker system prune -f --all --volumes'
+
+alias st='stern --color=always $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
