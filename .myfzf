@@ -24,16 +24,24 @@ gb() {
 }
 
 gt() {
-  is_in_git_repo || return
-  local tags branches target
-  tags=$(git tag | awk '{print $1}') || return
-  target=$(echo "$tags" | fzf) || return
-  echo $(echo "$target" | awk -F "\t" '{print $1}')
+  if [ -n "$1" ]; then
+    git tag "$1"
+  else
+    is_in_git_repo || return
+    local tags branches target
+    tags=$(git tag | awk '{print $1}') || return
+    target=$(echo "$tags" | fzf) || return
+    echo $(echo "$target" | awk -F "\t" '{print $1}')
+  fi
 }
 
 gco() {
-  is_in_git_repo || return
-  git checkout $(gb)
+  if [ -n "$1" ]; then
+    git checkout "$1"
+  else
+    is_in_git_repo || return
+    git checkout $(gb)
+  fi
 }
 
 glo() {
@@ -53,8 +61,20 @@ FZF-EOF"
 }
 
 grbi() {
-  is_in_git_repo || return
-  local commits
-  commits=$(git log --oneline --graph --color=always | fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort)
-  git rebase -i $(echo "$commits" | head -n1 | cut -d " " -f2)
+  if [ -n "$1" ]; then
+    git rebase -i "$1"
+  else
+    is_in_git_repo || return
+    local commits
+    commits=$(git log --oneline --graph --color=always | fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort)
+    git rebase -i $(echo "$commits" | head -n1 | cut -d " " -f2)
+  fi
+}
+
+grb() {
+  if [ -n "$1" ]; then
+    git rebase "$1"
+  else
+    git rebase $(gb)
+  fi
 }
