@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export FZF_DEFAULT_OPTS="--height 70% --reverse"
 export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}'"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
@@ -17,7 +19,7 @@ gb() {
   branches=$(
     git branch --all | grep -v HEAD | sed "s/.* //" | sed "s#remotes/[^/]*/##" | sort -u | awk '{print $1}'
   ) || return
-  target=$(echo "$branches" | fzf --no-hscroll --no-multi --delimiter="\t" -n 2 --ansi) || return
+  target=$(echo "$branches" | fzf) || return
   echo $(echo "$target" | awk -F "\t" '{print $1}')
 }
 
@@ -25,13 +27,13 @@ gt() {
   is_in_git_repo || return
   local tags branches target
   tags=$(git tag | awk '{print $1}') || return
-  target=$(echo "$tags" | fzf --no-hscroll --no-multi --delimiter="\t" -n 2 --ansi) || return
+  target=$(echo "$tags" | fzf) || return
   echo $(echo "$target" | awk -F "\t" '{print $1}')
 }
 
 gco() {
   is_in_git_repo || return
-  git checkout $(git-branch-fzf)
+  git checkout $(gb)
 }
 
 glo() {

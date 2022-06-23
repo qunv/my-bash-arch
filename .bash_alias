@@ -1,3 +1,5 @@
+#!/bin/bash
+
 alias s=source
 
 git_current_branch() {
@@ -67,4 +69,8 @@ alias dri='docker images | sed '1d' | fzf -m | awk '{print $3}' | xargs docker r
 alias drc='docker ps -a | sed '1d' | fzf -m | awk '{print $1}' | xargs docker rm -v'
 alias dthanos='docker system prune -f --all --volumes'
 
-alias st='stern --color=always $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
+get_container() {
+  kgp -o jsonpath='{range .items[*].status.containerStatuses[*]}{.name}{"\n"}{end}' | fzf
+}
+
+alias st='stern $(get_container) --exclude-container "istio-\w"'
