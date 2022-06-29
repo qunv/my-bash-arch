@@ -42,18 +42,75 @@ alias gst='git status'
 alias k='kubectl'
 alias kgp='kubectl get pod'
 alias kgd='kubectl get deployment'
-alias klf='kubectl logs -f $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
-alias kdp='kubectl describe pods $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
-alias kdlp='kubectl delete pod $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
-alias kdld='kubectl delete deployment $(echo $(kgd | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
 alias kgi='kubectl get ingress'
 alias kgs='kubectl get secret'
-alias kes='kubectl edit secrets $(echo $(kgs | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
-alias kexe='kubectl exec -it $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1) -- bash'
 alias kgcm='kubectl get configmap'
-alias kecm='kubectl edit configmap $(echo $(kgcm | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
 alias kc='kubectx'
 alias kns='kubens'
+
+#alias klf='kubectl logs -f $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
+klf() {
+  if [ -n "$1" ]; then
+    kubectl logs -f "$1"
+  else
+    kubectl logs -f $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)
+  fi
+}
+
+#alias kdp='kubectl describe pods $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
+kdp() {
+  if [ -n "$1" ]; then
+    kubectl describe pods "$1"
+  else
+    kubectl describe pods $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)
+  fi
+}
+
+#alias kdlp='kubectl delete pod $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
+kdlp() {
+  if [ -n "$1" ]; then
+    kubectl delete pod "$1"
+  else
+    kubectl delete pod $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)
+  fi
+}
+
+#alias kdld='kubectl delete deployment $(echo $(kgd | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
+kdld() {
+  if [ -n "$1" ]; then
+    kubectl delete deployment "$1"
+  else
+    kubectl delete deployment $(echo $(kgd | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)
+  fi
+}
+
+#alias kes='kubectl edit secrets $(echo $(kgs | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
+kes() {
+  if [ -n "$1" ]; then
+    kubectl edit secrets "$1"
+  else
+    kubectl edit secrets $(echo $(kgs | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)
+  fi
+}
+
+#alias kexe='kubectl exec -it $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1) -- bash'
+kexe() {
+  if [ -n "$1" ]; then
+    kubectl exec -it "$1" -- bash
+  else
+    kubectl exec -it $(echo $(kgp | sed "1d" | fzf) |  head -n1 | cut -d " " -f1) -- bash
+  fi
+}
+
+#alias kecm='kubectl edit configmap $(echo $(kgcm | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)'
+kecm() {
+  if [ -n "$1" ]; then
+    kubectl edit configmap "$1"
+  else
+    kubectl edit configmap $(echo $(kgcm | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)
+  fi
+}
+
 
 alias yss='yay -Ss'
 alias ys='yay -S'
