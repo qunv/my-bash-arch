@@ -111,6 +111,14 @@ kecm() {
   fi
 }
 
+krd(){
+  if [ -n "$1" ]; then
+    kubectl rollout restart deployment "$1"
+  else
+    kubectl rollout restart deployment $(echo $(kgd | sed "1d" | fzf) |  head -n1 | cut -d " " -f1)
+  fi
+}
+
 
 alias yss='yay -Ss'
 alias ys='yay -S'
