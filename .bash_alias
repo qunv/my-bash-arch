@@ -13,6 +13,21 @@ git_current_branch() {
   echo ${ref#refs/heads/}
 }
 
+nv() {
+  if [[ -n "$1" ]]; then
+    nvim "$1"
+  else
+    local drr
+    drr=$(fd --type d | fzf)
+    if [[ -z "$drr" ]]; then
+      exit 1
+    fi
+    nvim "$drr"
+  fi
+}
+
+#alias nv='nvim'
+alias v='vim'
 alias g=git
 alias gcl='git clone'
 alias ga='git add'
