@@ -78,3 +78,11 @@ grb() {
     git rebase $(gb)
   fi
 }
+
+cdd() {
+  if [[ -n "$1" ]]; then
+    cd "$1"
+  else
+    cd $(fd --type d | fzf)
+  fi
+}
